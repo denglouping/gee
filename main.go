@@ -5,23 +5,28 @@ import (
 	"net/http"
 )
 
-func main () {
+func main() {
 
 	test1 := gee.New()
 
 	test1.GET("/test", func(ctx *gee.Context) {
-		ctx.JSON(200,gee.H{
+		ctx.JSON(200, gee.H{
 			"user": "123",
 		})
 	})
 
 	test1.GET("/test2", func(ctx *gee.Context) {
-		ctx.String(200,"%s", ctx.Query("test"))
+		ctx.String(200, "%s", ctx.Query("test"))
 	})
 
 	test1.GET("/test3", func(ctx *gee.Context) {
-		ctx.Data(200,[]byte("testtesttest"))
+		ctx.Data(200, []byte("testtesttest"))
 	})
-	http.ListenAndServe(":8888",test1)
+
+	test1.GET("/test4/*abc", func(ctx *gee.Context) {
+		ctx.Data(200, []byte(ctx.Params["abc"]))
+	})
+
+	http.ListenAndServe(":8888", test1)
 
 }
